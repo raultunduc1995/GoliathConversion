@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="BU0">1dp</dimen>
+    <dimen name="BU1">2dp</dimen>
+    <dimen name="BU2">4dp</dimen>
+    <dimen name="BU3">8dp</dimen>
+    <dimen name="BU4">16dp</dimen>
+    <dimen name="BU5">24dp</dimen>
+    <dimen name="BU6">32dp</dimen>
+
+    <dimen name="transaction_item_height">100dp</dimen>
+    <dimen name="circle_size">120dp</dimen>
+    <dimen name="progress">20dp</dimen>
+    <dimen name="animated_progress">35dp</dimen>
+    <dimen name="big_animated_progress">50dp</dimen>
+
+    <dimen name="medium_text_size">18sp</dimen>
+    <dimen name="big_text_size">20sp</dimen>
+</resources>

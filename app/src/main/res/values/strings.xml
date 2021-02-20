@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GoliathConversion</string>
+
+    <string name="transaction">Transaction:</string>
+    <string name="currency">Currency:</string>
+    <string name="amount">Amount:</string>
+    <string name="total">Total:</string>
+</resources>
