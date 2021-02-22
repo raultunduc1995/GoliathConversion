@@ -6,17 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
-import com.example.goliathconversion.App
 import com.example.goliathconversion.R
 import com.example.goliathconversion.ui.viewmodels.MainViewModel
 import com.example.goliathconversion.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_sku_item.view.*
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object {
         private val TAG by lazy { MainActivity::class.java.simpleName }
@@ -25,13 +26,11 @@ class MainActivity : AppCompatActivity() {
         private const val PROGRESS_VIEW_TRANSLATION_DURATION = 1500L
     }
 
-    @Inject
-    lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var adapter: SkusAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as App).appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
         val onClickListener = object : OnItemClickListener {

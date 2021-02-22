@@ -4,12 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.goliathconversion.domain.Transaction
 import com.example.goliathconversion.repository.TransactionsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TransactionDetailsViewModel @Inject constructor(private val repository: TransactionsRepository) :
-    ViewModel() {
+@HiltViewModel
+class TransactionDetailsViewModel @Inject constructor(
+    private val repository: TransactionsRepository
+) : ViewModel() {
 
     fun getSkuTransactions(selectedSku: String) = liveData<List<Transaction>> {
         emit(repository.getAllTransactionsFor(selectedSku))

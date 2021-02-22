@@ -4,12 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.goliathconversion.repository.TransactionsRepository
 import com.example.goliathconversion.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class MainViewModel @Inject constructor(private val transactionsRepository: TransactionsRepository) :
-    ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val transactionsRepository: TransactionsRepository
+) : ViewModel() {
 
     val skus = liveData<Resource<List<String>>> {
         val loadDistinctSkus: suspend () -> Unit = {

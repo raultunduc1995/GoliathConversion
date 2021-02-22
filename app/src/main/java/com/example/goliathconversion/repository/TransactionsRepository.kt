@@ -8,10 +8,14 @@ import com.example.goliathconversion.utils.roundToHalfEvent
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TransactionsRepository @Inject constructor(private val transactionsApi: TransactionsApi) {
+interface TransactionsRepository {
+    suspend fun loadTransactionDetails(): List<Transaction>
+    fun getDistinctSkus(): List<String>
+    fun getAllTransactionsFor(sku: String): List<Transaction>
+    suspend fun getTotalSumInEuroFor(sku: String): Double
+}
+class TransactionsRepositoryImpl @Inject constructor(private val transactionsApi: TransactionsApi): TransactionsRepository {
     private val rates = mutableListOf<Rate>()
     private val transactions = mutableListOf<Transaction>()
 
@@ -26,7 +30,7 @@ class TransactionsRepository @Inject constructor(private val transactionsApi: Tr
         transactions.addAll(responses[1] as Collection<Transaction>)
     }
 
-    suspend fun loadTransactionDetails(): List<Transaction> {
+    override suspend fun loadTransactionDetails(): List<Transaction> {
         if (transactions.isEmpty() || rates.isEmpty()) {
             loadRatesAndTransactions()
         }
@@ -34,11 +38,11 @@ class TransactionsRepository @Inject constructor(private val transactionsApi: Tr
         return transactions
     }
 
-    fun getDistinctSkus(): List<String> = transactions
+    override fun getDistinctSkus(): List<String> = transactions
         .distinctBy { it.sku }
         .map { it.sku }
 
-    fun getAllTransactionsFor(sku: String): List<Transaction> {
+    override fun getAllTransactionsFor(sku: String): List<Transaction> {
         val matchSkuPredicate: (transaction: Transaction) -> Boolean = {
             it.sku == sku
         }
@@ -46,7 +50,7 @@ class TransactionsRepository @Inject constructor(private val transactionsApi: Tr
         return transactions.filter(matchSkuPredicate)
     }
 
-    suspend fun getTotalSumInEuroFor(sku: String): Double {
+    override suspend fun getTotalSumInEuroFor(sku: String): Double {
         val filteredSkus = getAllTransactionsFor(sku)
         var totalEuroSum = 0.0
 

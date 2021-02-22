@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
-import com.example.goliathconversion.App
 import com.example.goliathconversion.R
 import com.example.goliathconversion.domain.CurrencyTypes
 import com.example.goliathconversion.domain.Transaction
 import com.example.goliathconversion.ui.viewmodels.TransactionDetailsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_transaction_details.*
 import kotlinx.android.synthetic.main.layout_transaction_details.view.*
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class TransactionDetailsActivity : AppCompatActivity() {
 
     companion object {
@@ -30,13 +31,11 @@ class TransactionDetailsActivity : AppCompatActivity() {
             }
     }
 
-    @Inject
-    lateinit var viewModel: TransactionDetailsViewModel
+    private val viewModel: TransactionDetailsViewModel by viewModels()
 
     private lateinit var adapter: TransactionsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as App).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         val initTransactionsList: () -> Unit = {
             val itemDecoration = DividerItemDecoration(

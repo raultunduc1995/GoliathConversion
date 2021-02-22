@@ -1,12 +1,15 @@
 package com.example.goliathconversion.dependency
 
-import android.content.Context
-import com.example.goliathconversion.App
 import com.example.goliathconversion.BuildConfig
+import com.example.goliathconversion.repository.TransactionsRepository
+import com.example.goliathconversion.repository.TransactionsRepositoryImpl
 import com.example.goliathconversion.repository.api.TransactionsApi
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -16,18 +19,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val app: App) {
-
-    @Singleton
-    @Provides
-    fun getContext(): Context = app.applicationContext
-}
-
-@Module
-class NetworkModule {
-    companion object {
-        private const val ACCEPT_HEADER = "Accept"
-    }
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
+    private const val ACCEPT_HEADER = "Accept"
 
     @Provides
     @Singleton
@@ -82,4 +76,15 @@ class NetworkModule {
     fun getTransactionApi(retrofit: Retrofit): TransactionsApi {
         return retrofit.create(TransactionsApi::class.java)
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class BindingModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindTransactionsRepository(
+        transactionsRepositoryImpl: TransactionsRepositoryImpl
+    ): TransactionsRepository
 }
